@@ -66,7 +66,7 @@ for (p of p1Valids) {
                 break;
             case "pid":
                 // pid (Passport ID) - a nine-digit number, including leading zeroes.
-                if (!value.match(/^\d{9}$/))  isValid = false
+                if (!value.match(/^\d{9}$/)) isValid = false
                 break;
             default:
         }
