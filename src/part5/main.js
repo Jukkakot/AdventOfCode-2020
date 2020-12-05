@@ -28,8 +28,7 @@ console.log("Max id:", Math.max(...idArr))
 const sortedIds = idArr.sort((a, b) => a - b)
 var prevN= sortedIds[0]
 for(n of sortedIds){
-    if(n !== prevN+1){
-        console.log(n,prevN)
-    }
+    if(n !== prevN+1 && n !== prevN)
+        console.log("Seat:",n-1)
     prevN = n
 }
