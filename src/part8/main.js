@@ -1,6 +1,4 @@
-const { PRIORITY_HIGH } = require('constants');
 var fs = require('fs');
-const { isRegExp } = require('util');
 require.extensions['.txt'] = function (module, filename) {
     module.exports = fs.readFileSync(filename, 'utf8');
 };

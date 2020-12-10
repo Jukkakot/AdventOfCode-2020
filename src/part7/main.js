@@ -2,7 +2,7 @@ var fs = require('fs');
 require.extensions['.txt'] = function (module, filename) {
     module.exports = fs.readFileSync(filename, 'utf8');
 };
-const rulesSplit = require("./rules.txt").split("\r\n")
+const rulesSplit = require("./testRules.txt").split("\r\n")
 var rulesArr = []
 for (line of rulesSplit) {
     line = line.replace(/\s/g, '')
@@ -70,65 +70,83 @@ for (shinyRule of colorsToCheck) {
 }
 var summed = true
 var checkedOutBags = []
+
+var corrSum = 0
 // while (summed) {
 //     summed = false
-//     for (rule of rulesArr){
-//         var outColor = rule[0]
-//         var ruleInBags = rule[1]
 
-//         for(ctc of colorsToCheck){
+//     for (ctc of colorsToCheck) {
+//         // console.log(ctc)
+//         corrSum += ctc[0]
+//         var ctcNumb = ctc[0]
+//         for (rule of rulesArr) {
+//             var outColor = rule[0]
+//             var ruleInBags = rule[1]
 //             //&& !checkedOutBags.includes(outColor)
-//             if(ctc[1] === outColor){
-//                 checkedOutBags.push(outColor)
-//                 const ctcNumb = ctc[0]
-//                  //Bags without stuff inside them
+//             if (ctc[1] === outColor) {
+//                 summed = true
+//                 colorsToCheck.splice(colorsToCheck.indexOf(ctc), 1)
+//                 ruleInBags.forEach(bag => colorsToCheck.push(bag))
 //                 for (ruleInBag of ruleInBags) {
 //                     ruleInBag[0] *= ctcNumb
-//                     colorsToCheck = []
-//                     colorsToCheck.push(ruleInBag)
-//                     sum +=ruleInBag[0]
-//                     summed = true
+//                     sum += ctcNumb
 //                 }
-
-//                 break
 //             }
 //         }
 
 //     }
+
 // }
-var corrSum = 0
-while (summed) {
-    summed = false
-    
-    for (ctc of colorsToCheck) {
-        console.log(ctc)
-        corrSum += ctc[0]
-        var ctcNumb = ctc[0]
-        for (rule of rulesArr) {
-            var outColor = rule[0]
-            var ruleInBags = rule[1]
-            //&& !checkedOutBags.includes(outColor)
-            if (ctc[1] === outColor) {
-                summed = true
-                colorsToCheck.splice(colorsToCheck.indexOf(ctc), 1)
-                ruleInBags.forEach(bag => colorsToCheck.push(bag))
-                for (ruleInBag of ruleInBags) {
-                    ruleInBag[0] *= ctcNumb
-                    sum += ctcNumb
-                }
+
+// console.log(outerBags, "\n", outerBags.length, "on 148", outerBags.length === 148)
+// console.log("has dupes", (new Set(outerBags).size !== outerBags.length))
+// console.log("includes shiny gold", outerBags.includes(shinygold))
+// console.log("checked out bags", checkedOutBags)
+// console.log("Colors to check", colorsToCheck)
+// // for(ctc of colorsToCheck){
+// //     sum += ctc[0]
+// // }
+// console.log("corrsum:", corrSum)
+// console.log("sum:", sum)
+
+function bagSum(bag) {
+    // console.log(ctc)
+    var kisko =1
+    // if (bag.length === 0) {
+    //     // console.log("returning empty bag",bag)
+    //     return kisko
+    // }
+    for (var rule of rulesArr) {
+        var outColor = rule[0]
+        var ruleInBags = rule[1]
+        // console.log(ruleInBags)
+        // if (ruleInBags.length === 0) {
+        //     // console.log("returning empty rule",ruleInBags)
+        //     return kisko
+        // }
+        // console.log(ctcBag)
+        if (bag[1] === outColor) {
+            // ruleInBags.forEach(bag=> {ctc.push(bag)})
+            for (var inBag of ruleInBags) {
+                // bag[0]*=inBag[0]
+                inBag[0] *= bag[0]
+                kisko += bagSum(inBag)
+                // inBag[0] *= bag[0]
+                //  kisko += bag[0]
+                // kisko *=bagSum(inBag)
+                // kisko += bagSum(inBag)
+                // kisko += inBag[0]
+               
             }
+            break
         }
-
     }
-
+    console.log("returning end",kisko)
+    return kisko
 }
-console.log(outerBags, "\n", outerBags.length, "on 148", outerBags.length === 148)
-console.log("has dupes", (new Set(outerBags).size !== outerBags.length))
-console.log("includes shiny gold", outerBags.includes(shinygold))
-console.log("checked out bags", checkedOutBags)
-console.log("Colors to check", colorsToCheck)
-// for(ctc of colorsToCheck){
-//     sum += ctc[0]
-// }
-console.log("corrsum:", corrSum)
-console.log("sum:", sum)
+var jaahasSUm = 0
+for (bag of shinygoldRule[1]) {
+    console.log(bag)
+    jaahasSUm += bagSum(bag)
+}
+console.log("new sum", jaahasSUm)
