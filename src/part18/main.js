@@ -1,5 +1,4 @@
 var fs = require('fs');
-const { versions } = require('process');
 require.extensions['.txt'] = function (module, filename) {
     module.exports = fs.readFileSync(filename, 'utf8');
 };
